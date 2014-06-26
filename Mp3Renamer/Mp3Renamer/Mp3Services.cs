@@ -29,11 +29,27 @@ namespace Mp3Renamer
             string fileNameOnly;
             TagLib.File fileTag = TagLib.File.Create(fileName);
             string trackNumber = GetTrackNumber(fileTag);
+            string songTitle = GetTagMemberWithoutIllegalChars(fileTag.Tag.Title);
+            string artistName = GetTagMemberWithoutIllegalChars(fileTag.Tag.FirstPerformer);
                         
 
-            fileNameOnly = fileTag.Tag.FirstPerformer +" - " + trackNumber + " - " + fileTag.Tag.Title + ".mp3";
+            fileNameOnly = artistName + " - " + trackNumber + " - " + songTitle + ".mp3";
             result = Path.GetDirectoryName(fileName) + Path.DirectorySeparatorChar + fileNameOnly;
             
+            return result;
+        }
+
+        private static string GetTagMemberWithoutIllegalChars(string fileTagMember)
+        {
+            string result = fileTagMember;
+            //TODO: There has to be a more efficent way to do this using regex
+            string[] illegalChars = {"<", ">", @"/", ":", "\"", @"\", "|", "?", "*" };
+                        
+            foreach(string illegalChar in illegalChars)
+            {
+                result = result.Replace(illegalChar, String.Empty);
+            }
+
             return result;
         }
 
@@ -66,6 +82,7 @@ namespace Mp3Renamer
                 catch(Exception ex)
                 {
                     Console.WriteLine("Unable to rename file - " + Path.GetFileName(file));
+                    Console.WriteLine(ex.Message);
                 }
             }
 
