@@ -15,10 +15,20 @@ namespace Mp3Renamer
             return Directory.GetCurrentDirectory();
         }
 
-        public static IEnumerable<string> GetMp3FileList(string currentDirectory)
+        public static IEnumerable<string> GetMp3FileList(string currentDirectory, bool isRecursive)
         {
-            var result = Directory.EnumerateFiles(currentDirectory, "*.*", SearchOption.TopDirectoryOnly)
-            .Where(s => s.EndsWith(".mp3", StringComparison.OrdinalIgnoreCase));
+            IEnumerable<string> result;
+
+            if(isRecursive)
+            {
+                result = Directory.EnumerateFiles(currentDirectory, "*.*", SearchOption.AllDirectories)
+                .Where(s => s.EndsWith(".mp3", StringComparison.OrdinalIgnoreCase));
+            }
+            else
+            {
+                result = Directory.EnumerateFiles(currentDirectory, "*.*", SearchOption.TopDirectoryOnly)
+                .Where(s => s.EndsWith(".mp3", StringComparison.OrdinalIgnoreCase));
+            }
 
             return result;
         }
