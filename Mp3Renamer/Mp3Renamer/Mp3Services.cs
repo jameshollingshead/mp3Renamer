@@ -36,5 +36,27 @@ namespace Mp3Renamer
             return result;
         }
 
+        public static void RenameFiles(IEnumerable<string> fileList)
+        {
+            string newFileName;
+            int fileCount = 0;
+
+            foreach(string file in fileList)
+            {
+                newFileName = DetermineNewFileName(file);
+                try
+                {
+                    System.IO.File.Move(file, newFileName);
+                    fileCount++;
+                }
+                catch(Exception ex)
+                {
+                    Console.WriteLine("Unable to rename file - " + Path.GetFileName(file));
+                }
+            }
+
+            Console.WriteLine(fileCount + " files renamed");
+        }
+
     }
 }

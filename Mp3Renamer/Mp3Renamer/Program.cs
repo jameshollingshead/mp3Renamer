@@ -14,6 +14,7 @@ namespace Mp3Renamer
             string presentWorkingDirectory = Mp3Services.GetPresentWorkingDirectory();
             IEnumerable<string> fileList = Mp3Services.GetMp3FileList(presentWorkingDirectory);
 
+            Mp3Services.RenameFiles(fileList);
 
         }
     }
