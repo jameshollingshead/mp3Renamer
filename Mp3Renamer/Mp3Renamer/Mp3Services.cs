@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using TagLib;
 
 namespace Mp3Renamer
 {
@@ -21,5 +22,19 @@ namespace Mp3Renamer
 
             return result;
         }
+
+        public static string DetermineNewFileName(string fileName)
+        {
+            string result;
+            string fileNameOnly;
+            TagLib.File fileTag = TagLib.File.Create(fileName);
+                        
+
+            fileNameOnly = fileTag.Tag.FirstPerformer +" - " + fileTag.Tag.Track + " - " + fileTag.Tag.Title + ".mp3";
+            result = Path.GetDirectoryName(fileName) + Path.DirectorySeparatorChar + fileNameOnly;
+            
+            return result;
+        }
+
     }
 }
