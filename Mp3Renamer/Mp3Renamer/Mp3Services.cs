@@ -28,11 +28,25 @@ namespace Mp3Renamer
             string result;
             string fileNameOnly;
             TagLib.File fileTag = TagLib.File.Create(fileName);
+            string trackNumber = GetTrackNumber(fileTag);
                         
 
-            fileNameOnly = fileTag.Tag.FirstPerformer +" - " + fileTag.Tag.Track + " - " + fileTag.Tag.Title + ".mp3";
+            fileNameOnly = fileTag.Tag.FirstPerformer +" - " + trackNumber + " - " + fileTag.Tag.Title + ".mp3";
             result = Path.GetDirectoryName(fileName) + Path.DirectorySeparatorChar + fileNameOnly;
             
+            return result;
+        }
+
+        private static string GetTrackNumber(TagLib.File fileTag)
+        {
+            string result;
+
+            //We want track numbers to be in the form of NN, so track 1 is "01" and track 10 is "10"
+            if (fileTag.Tag.Track < 10)
+                result = "0" + fileTag.Tag.Track.ToString();
+            else
+                result = fileTag.Tag.Track.ToString();
+
             return result;
         }
 
